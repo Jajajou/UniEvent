@@ -7,6 +7,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Students from "./pages/Students";
 import Scanner from "./pages/Scanner";
+import QRGenerator from "./pages/QRGenerator";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -15,6 +16,7 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/students"} component={Students} />
       <Route path={"/scanner"} component={Scanner} />
+      <Route path={"/qr-generator"} component={QRGenerator} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
