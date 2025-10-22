@@ -100,11 +100,19 @@ export default function Scanner() {
     if (scannerRef.current) {
       try {
         await scannerRef.current.stop();
-        scannerRef.current.clear();
-        scannerRef.current = null;
+        // Wait a bit before clearing to ensure camera is fully stopped
+        setTimeout(() => {
+          if (scannerRef.current) {
+            scannerRef.current.clear();
+            scannerRef.current = null;
+          }
+        }, 100);
         setScanning(false);
       } catch (err) {
         console.error("Error stopping scanner:", err);
+        // Force cleanup even on error
+        scannerRef.current = null;
+        setScanning(false);
       }
     }
   };
@@ -120,7 +128,11 @@ export default function Scanner() {
     return () => {
       // Cleanup on unmount
       if (scannerRef.current) {
-        scannerRef.current.stop().catch(console.error);
+        scannerRef.current.stop().then(() => {
+          if (scannerRef.current) {
+            scannerRef.current.clear();
+          }
+        }).catch(console.error);
       }
     };
   }, []);
